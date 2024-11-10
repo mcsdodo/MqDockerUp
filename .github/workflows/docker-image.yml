@@ -36,7 +36,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: micrib/mqdockerup
+          images: mcsdodo/mqdockerup
           # Conditional tag logic based on the event that triggered the workflow
           tags: |
             type=raw,value=${{ github.event_name == 'release' && startsWith(github.ref, 'refs/tags/v') && github.ref_name || github.event_name == 'workflow_dispatch' && github.event.inputs.version }},enable=true
