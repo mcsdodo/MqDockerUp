@@ -8,7 +8,6 @@ import logger from "./services/LoggerService"
 const _ = require('lodash');
 
 require('source-map-support').install();
-
 const config = ConfigService.getConfig();
 const client = mqtt.connect(config.mqtt.connectionUri, {
   username: config.mqtt.username,
@@ -87,6 +86,18 @@ let imageCheckingInterval: NodeJS.Timeout;
 const startImageCheckingInterval = async () => {
   logger.info(`Setting up startImageCheckingInterval with value ${config.main.imageUpdateInterval}`);
   imageCheckingInterval = setInterval(checkAndPublishImageUpdateMessages, TimeService.parseDuration(config.main.imageUpdateInterval));
+}
+
+// Check for new/old containers and publish updates
+const checkAndPublishStats = async (): Promise<void> => {
+  await HomeassistantService.publishStats(client);
+};
+
+let intervalId: NodeJS.Timeout;
+let intervalId2: NodeJS.Timeout;
+
+const startInterval = async () => {
+  intervalId2 = setInterval(checkAndPublishStats, TimeService.parseDuration(config.main.statsInterval));
 };
 
 // Connected to MQTT broker
@@ -95,6 +106,7 @@ client.on('connect', async function () {
 
   await checkAndPublishContainersMessages();
   startContainerCheckingInterval();
+  startInterval();
 
   if (config.main.imageUpdateInterval) {
     await checkAndPublishImageUpdateMessages();
@@ -148,7 +160,6 @@ client.on("message", async (topic: string, message: any) => {
       }
       return;
     }
-
     if (data?.containerId) {
       logger.info(`Got restart message for ${data?.containerId}`);
       await DockerService.restartContainer(data?.containerId);

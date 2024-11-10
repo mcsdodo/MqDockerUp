@@ -6,6 +6,7 @@ main:
   interval: "5m"
   prefix: ""
   imageUpdateInterval: ""
+  statsInterval: "5s"
 
 # MQTT configuration
 mqtt:
