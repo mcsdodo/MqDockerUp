@@ -327,7 +327,7 @@ export default class HomeassistantService {
  * @param container
  * @param client
  */
-public static async publishUpdateProgressMessage(container: any, client: any, update_percentage: number | null = null, remaining: number | null = null, state: string | null = null, log: boolean = true) {
+public static async publishUpdateProgressMessage(container: any, client: any, progress: number | null = null, remaining: number | null = null, state: string | null = null, log: boolean = true) {
   if (typeof container == "string") {
     container = DockerService.docker.getContainer(container).inspect();
   }
@@ -351,8 +351,8 @@ public static async publishUpdateProgressMessage(container: any, client: any, up
       }
     };
 
-    if (update_percentage !== null && remaining !== null) {
-      updatePayload.update.progress = update_percentage;
+    if (progress !== null && remaining !== null) {
+      updatePayload.update.progress = progress;
       updatePayload.update.remaining = remaining;
     }
   } else{
@@ -361,13 +361,13 @@ public static async publishUpdateProgressMessage(container: any, client: any, up
       release_url: "https://github.com/MichelFR/MqDockerUp",
       entity_picture: null,
       title: `${image}:${tag}`,
-      update_percentage: null,
+      progress: null,
 
   }
 
 
-  if (update_percentage !== null && remaining !== null) {
-    updatePayload.update.update_percentage = update_percentage;
+  if (progress !== null && remaining !== null) {
+    updatePayload.update.progress = progress;
     updatePayload.update.remaining = remaining;
   }
 
@@ -437,9 +437,9 @@ public static async publishUpdateProgressMessage(container: any, client: any, up
           }
         };
   
-        if (update_percentage !== null && remaining !== null) {
-          updatePayload.update.progress = update_percentage;
-          updatePayload.progress = update_percentage;
+        if (progress !== null && remaining !== null) {
+          updatePayload.update.progress = progress;
+          updatePayload.progress = progress;
           updatePayload.update.remaining = remaining;
   
           if (state) {
@@ -455,12 +455,12 @@ public static async publishUpdateProgressMessage(container: any, client: any, up
           entity_picture: "https://raw.githubusercontent.com/MichelFR/MqDockerUp/refs/heads/main/assets/logo_200x200.png",
           title: `${image}:${tag}`,
           in_progress: false,
-          update_percentage: null,
+          progress: null,
         };
 
-      if (update_percentage !== null && remaining !== null) {
-        updatePayload.update.update_percentage = update_percentage;
-        updatePayload.update_percentage = update_percentage;
+      if (progress !== null && remaining !== null) {
+        updatePayload.update.progress = progress;
+        updatePayload.progress = progress;
         updatePayload.update.remaining = remaining;
       }
 
