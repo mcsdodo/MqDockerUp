@@ -144,7 +144,7 @@ services:
     restart: always
     environment:
       MAIN_INTERVAL: "5m"
-      MAIN_IMAGEUPDATEINTERVAL: ""
+      MAIN_IMAGEUPDATEINTERVAL: "1h"
       MAIN_PREFIX: ""
       MQTT_CONNECTIONURI: "mqtt://127.0.0.1:1883"
       MQTT_TOPIC: "mqdockerup"
@@ -174,6 +174,7 @@ The main configuration is specified in the `main` section:
 ```yaml
 main:
   interval: "5m"
+  imageUpdateInterval: "1h"
   prefix: ""
 ```
 The `interval` parameter specifies the frequency at which updates are checked and published to the MQTT broker. The interval must be in the format `[number][unit]`, where `[number]` is a positive integer and `[unit]` is one of `s` (seconds), `m` (minutes), `h` (hours), `d` (days), or `w` (weeks).
